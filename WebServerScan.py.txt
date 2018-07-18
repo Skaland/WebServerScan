@@ -1,0 +1,61 @@
+#! /usr/bin/python3
+
+print ("Web Server Scanner 1.0")
+print ("Author - Skaland")
+print ("")
+print ("")
+print ("")
+
+import subprocess 
+
+#Inputting of the site you are testing
+question = "Enter website you wish to scan. Do NOT include http or https."
+print (question)
+website = input() 
+
+#start of nmap
+print ("Starting Nmap")
+nmap = "nmap -F -oN NmapOutput.txt "
+   
+nmap_scan = nmap + website
+
+a = subprocess.Popen(nmap_scan, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+out = a.communicate()[0]
+
+print ("Nmap Finished - Outputed to NmapOutput.txt")
+print ("Starting SSLScan")
+
+#start of sslscan
+ssl = "sslscan https://"
+pipe = "> SslScanOutput.txt"
+ssl_scan = ssl + website + pipe
+
+b = subprocess.Popen(ssl_scan, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+out = b.communicate()[0]
+
+print ("SSLScan Finished - Outputed to file SslScanOutput.txt")
+print ("Starting Dirb")
+
+#start of dirb
+dirb = "dirb https://"
+dirbout = " -o DirbOutput.txt"
+dirb_scan = dirb + website + dirbout
+
+c = subprocess.Popen(dirb_scan, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+out = c.communicate()[0]
+
+print ("Dirb Finished - Outputed to DirbOutput.txt")
+print ("Starting Nikto")
+
+#start of nikto
+nikto = "nikto -h https://"
+niktoout = " -o NiktoOutput.txt"
+nikto_scan = nikto + website + niktoout
+
+d = subprocess.Popen(nikto_scan, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+out = d.communicate()[0]
+
+print ("Nikto Finished - Outputed to NiktoOutput.txt")
+
+
+
